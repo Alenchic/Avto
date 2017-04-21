@@ -6,20 +6,21 @@
         xmlns:local="clr-namespace:avto"
         xmlns:PostavkaDataSetTableAdapters="clr-namespace:avto.PostavkaDataSetTableAdapters" xmlns:PostavkaDataSet1TableAdapters="clr-namespace:avto.PostavkaDataSet1TableAdapters" x:Class="avto.Remont"
         mc:Ignorable="d"
-        Title="Remont" Height="369.5" Width="900" Closing="Window_Closing">
+        Title="Remont" Height="369.5" Width="900" Closing="Window_Closing" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Background="#FF83EEEE">
         <TabControl x:Name="tabControl" Background="#FF83EEEE" HorizontalAlignment="Left" Height="319" Margin="10,10,0,0" VerticalAlignment="Top" Width="872">
             <TabItem Header="Заявка деталей" Loaded="TabItem_Loaded_2">
                 <Grid Background="#FF83EEEE">
-                    <Button x:Name="btnclearzay" Content="Очистить поля" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="56" Height="72" Click="btnclearzay_Click" />
                     <Button x:Name="btnaddzay" Content="Добавить заявку на запчасть" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Click="btnaddzay_Click"  />
                     <Button x:Name="btndelzay" Content="Удалить заявку на запчасть" HorizontalAlignment="Left" Margin="186,267,0,0" VerticalAlignment="Top"  Click="btndelzay_Click" />
                     <Button x:Name="btnupdzay" Content="Изменить заявку на запчасть" HorizontalAlignment="Left" Margin="354,267,0,0" VerticalAlignment="Top" Click="btnupdzay_Click" />
                     <Label x:Name="Model1" Content="Дата заявки:" HorizontalAlignment="Left" Margin="71,187,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
-                    <Label x:Name="Tip_avto1" Content=" Номер детали:" HorizontalAlignment="Left" Margin="71,237,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
+                    <Label x:Name="Tip_avto1" Content=" Выберети деталь:" HorizontalAlignment="Left" Margin="71,237,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
                     <Label x:Name="Tip_komplec1" Content="Колличество деталей:" HorizontalAlignment="Left" Margin="61,212,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="127" Height="25"/>
                     <TextBox x:Name="tbZaykolvo" MaxLength="3" Height="23" TextWrapping="Wrap" Margin="193,212,505,56" PreviewTextInput="klientseriya_PreviewTextInput"/>
-                    <TextBox x:Name="tbZaynam" MaxLength="4" Height="23" TextWrapping="Wrap" Margin="193,237,505,31" PreviewTextInput="klientseriya_PreviewTextInput"/>
+                    <ComboBox x:Name="tbZaynam" HorizontalAlignment="Left" Height="23" Margin="193,240,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0" />
+
+                    <!--<TextBox x:Name="tbZaynam" MaxLength="4" Height="23" TextWrapping="Wrap" Margin="193,237,505,31" PreviewTextInput="klientseriya_PreviewTextInput"/>-->
                     <DataGrid x:Name="dataGrid"  AutoGenerateColumns="False" HorizontalAlignment="Left" Height="175" Margin="366,10,0,0" VerticalAlignment="Top" Width="500">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding ID_Zapch}"  Header="№Детали"  />
@@ -49,7 +50,43 @@
                     <DatePicker x:Name="DataZay"  HorizontalAlignment="Left" Height="25" Margin="193,187,0,0" VerticalAlignment="Top" Width="168" BorderBrush="{x:Null}" PreviewTextInput="DataZay_PreviewTextInput"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Клиент" Loaded="TabItem_Loaded_1">
+           
+            <TabItem Header="Автомобиль" Loaded="TabItem_Loaded">
+                <Grid Background="#FF83EEEE">
+                    <DataGrid x:Name="dataGrid2" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="167" Margin="10,10,0,0" VerticalAlignment="Top" Width="846">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding id_auto}"  Header="№Автомобиля"  />
+                            <DataGridTextColumn Binding="{Binding Gos_nomer}"  Header="Гос номер"  />
+                            <DataGridTextColumn Binding="{Binding Data_vypuska}"  Header="Дата выпуска" />
+                            <DataGridTextColumn Binding="{Binding Marka}" Header="Марка" />
+                            <DataGridTextColumn Binding="{Binding Model}" Header="Модель" />
+                            <DataGridTextColumn Binding="{Binding Tip_avto}" Header="Тип авто" />
+                            <DataGridTextColumn Binding="{Binding Tip_Komplektacii}" Header="Тип комплектации" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="avtoadd"  Content="Добавить запись" HorizontalAlignment="Left" Margin="-4,271,0,0" VerticalAlignment="Top" Click="avtoadd_Click" Width="190"  />
+                    <Button x:Name="avtoupd" Content="Изменить запись" HorizontalAlignment="Left" Margin="231,271,0,0" VerticalAlignment="Top" Width="190" Click="avtoupd_Click"/>
+                    <Label x:Name="Nomer_gosnomera" Content="Введите гос-номер автомобиля:" HorizontalAlignment="Left" HorizontalContentAlignment="Right"  FontSize="11" Margin="10,182,0,0" VerticalAlignment="Top" Width="176" Height="25"/>
+                    <Label x:Name="Data" Content="Дата выпуска:" HorizontalAlignment="Left" Margin="10,212,0,0" FontSize="11" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="176" Height="25"/>
+                    <Label x:Name="Marka" Content="Марка:" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="176" Height="25"/>
+                    <Label x:Name="Model" Content="Модель:" HorizontalAlignment="Left" Margin="354,182,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
+                    <Label x:Name="Tip_avto" Content="Тип Автомобиля:" HorizontalAlignment="Left" Margin="354,239,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
+                    <Label x:Name="Tip_komplec" Content="Тип комплектации:" HorizontalAlignment="Left" Margin="354,212,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
+                    <TextBox x:Name="avtogos" MaxLength="6" Height="23" TextWrapping="Wrap" Margin="186,184,512,84" />
+                    <DatePicker x:Name="avtodata"  HorizontalAlignment="Left" Height="25" Margin="186,212,512,56" VerticalAlignment="Top" Width="168" BorderBrush="{x:Null}" PreviewTextInput="DataZay_PreviewTextInput"/>
+                    <TextBox x:Name="avtomarka" MaxLength="20" Height="23" TextWrapping="Wrap" Margin="186,239,512,29"/>
+                    <TextBox x:Name="avtomodel" Height="23" MaxLength="15" TextWrapping="Wrap" Margin="471,184,227,84" />
+                    <ComboBox x:Name="comboBoxkorl" HorizontalAlignment="Left"  Height="23" Margin="471,212,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0">
+
+
+                    </ComboBox>
+                    <ComboBox x:Name="comboBox1tip" HorizontalAlignment="Left" Height="23" Margin="471,239,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0" >
+
+                    </ComboBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Клиент" Loaded="TabItem_Loaded_1" RenderTransformOrigin="2.593,0.636">
                 <Grid Background="#FF83EEEE">
                     <DataGrid x:Name="dataGrid1" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="167" Margin="10,10,0,0" VerticalAlignment="Top" Width="846">
                         <DataGrid.Columns>
@@ -65,9 +102,8 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button x:Name="klientadd" Content="Добавить запись" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Click="klientadd_Click"   />
-                    <Button x:Name="klientdell" Content="Удалить запись" HorizontalAlignment="Left" Margin="127,267,0,0" VerticalAlignment="Top" Width="97" Click="klientdell_Click" />
-                    <Button x:Name="klientupd" Content="Изменить запись" HorizontalAlignment="Left" Margin="242,267,0,0" VerticalAlignment="Top" Width="98"/>
+                    <Button x:Name="klientadd" Content="Добавить запись" HorizontalAlignment="Left"  Margin="-4,271,0,0" VerticalAlignment="Top" Click="klientadd_Click" Width="190"  />
+                    <Button x:Name="klientupd" Content="Изменить запись" HorizontalAlignment="Left"  Margin="231,271,0,0" VerticalAlignment="Top" Width="190" Click="klientupd_Click"/>
                     <Label x:Name="klient1" Content="Фамилия клиента:" HorizontalAlignment="Left" HorizontalContentAlignment="Right"  FontSize="11" Margin="10,182,0,0" VerticalAlignment="Top" Width="110" Height="25"/>
                     <Label x:Name="klient2" Content="Имя клиента:" HorizontalAlignment="Left" Margin="10,212,0,0" FontSize="11" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="110" Height="25"/>
                     <Label x:Name="klient3" Content="Отчество клиента:" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="110" Height="25"/>
@@ -86,45 +122,11 @@
                     <TextBox x:Name="klientfam" MaxLength="20" Height="23" TextWrapping="Wrap" Margin="120,184,578,84" />
                     <TextBox x:Name="klientim" Height="23" MaxLength="20" TextWrapping="Wrap" Margin="120,214,578,54"/>
                     <TextBox x:Name="klientoth" Height="23" MaxLength="20" TextWrapping="Wrap" Margin="120,242,578,26"/>
-                    <TextBox x:Name="klientseriya" Height="23" MaxLength="4" TextWrapping="Wrap"   Margin="430,216,268,52" PreviewTextInput="klientseriya_PreviewTextInput" />
+                    <TextBox x:Name="klientseriya" Height="23" MaxLength="4" TextWrapping="Wrap"   Margin="430,214,268,54" PreviewTextInput="klientseriya_PreviewTextInput" />
                     <TextBox x:Name="klientnomer" Height="23" MaxLength="6" TextWrapping="Wrap"   Margin="430,242,268,26"  PreviewTextInput="klientseriya_PreviewTextInput"/>
-                    <TextBox x:Name="klientgosnomerav" Height="23" MaxLength="6" TextWrapping="Wrap"   Margin="430,186,268,82" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Автомобиль" Loaded="TabItem_Loaded">
-                <Grid Background="#FF83EEEE">
-                    <DataGrid x:Name="dataGrid2" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="167" Margin="10,10,0,0" VerticalAlignment="Top" Width="846">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Gos_nomer}"  Header="Гос номер"  />
-                            <DataGridTextColumn Binding="{Binding Data_vypuska}"  Header="Дата выпуска" />
-                            <DataGridTextColumn Binding="{Binding Marka}" Header="Марка" />
-                            <DataGridTextColumn Binding="{Binding Model}" Header="Модель" />
-                            <DataGridTextColumn Binding="{Binding Tip_avto}" Header="Тип авто" />
-                            <DataGridTextColumn Binding="{Binding Tip_Komplektacii}" Header="Тип комплектации" />
+                    <!--<TextBox x:Name="klientgosnomerav" Height="23" MaxLength="6" TextWrapping="Wrap"   Margin="430,186,268,82" />-->
+                    <ComboBox x:Name="klientgosnomerav" HorizontalAlignment="Left"  Height="23" Margin="430,184,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0"/>
 
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Button x:Name="avtoadd"  Content="Добавить запись" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Click="avtoadd_Click"  />
-                    <Button x:Name="avtodell" Content="Удалить запись" HorizontalAlignment="Left" Margin="127,267,0,0" VerticalAlignment="Top" Width="97" />
-                    <Button x:Name="avtoupd" Content="Изменить запись" HorizontalAlignment="Left" Margin="242,267,0,0" VerticalAlignment="Top" Width="98"/>
-                    <Label x:Name="Nomer_gosnomera" Content="Введите гос-номер автомобиля:" HorizontalAlignment="Left" HorizontalContentAlignment="Right"  FontSize="11" Margin="10,182,0,0" VerticalAlignment="Top" Width="176" Height="25"/>
-                    <Label x:Name="Data" Content="Дата выпуска:" HorizontalAlignment="Left" Margin="10,212,0,0" FontSize="11" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="176" Height="25"/>
-                    <Label x:Name="Marka" Content="Марка:" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="176" Height="25"/>
-                    <Label x:Name="Model" Content="Модель:" HorizontalAlignment="Left" Margin="354,182,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
-                    <Label x:Name="Tip_avto" Content="Тип Автомобиля:" HorizontalAlignment="Left" Margin="354,239,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
-                    <Label x:Name="Tip_komplec" Content="Тип комплектации:" HorizontalAlignment="Left" Margin="354,212,0,0" VerticalAlignment="Top"  FontSize="11" HorizontalContentAlignment="Right" Width="117" Height="25"/>
-                    <TextBox x:Name="avtogos" MaxLength="6" Height="23" TextWrapping="Wrap" Margin="186,184,512,84" />
-                    <DatePicker x:Name="avtodata"  HorizontalAlignment="Left" Height="25" Margin="186,212,512,56" VerticalAlignment="Top" Width="168" BorderBrush="{x:Null}" PreviewTextInput="DataZay_PreviewTextInput"/>
-                    <!--<TextBox x:Name="avtodata" MaxLength="10" Height="23" TextWrapping="Wrap" Margin="186,212,512,56"/>-->
-                    <TextBox x:Name="avtomarka" MaxLength="20" Height="23" TextWrapping="Wrap" Margin="186,239,512,29"/>
-                    <TextBox x:Name="avtomodel" Height="23" MaxLength="15" TextWrapping="Wrap" Margin="471,184,227,84" />
-                    <ComboBox x:Name="comboBoxkorl" HorizontalAlignment="Left"  Height="23" Margin="471,212,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0">
-
-
-                    </ComboBox>
-                    <ComboBox x:Name="comboBox1tip" HorizontalAlignment="Left" Height="23" Margin="471,239,0,0" VerticalAlignment="Top" Width="168" IsSynchronizedWithCurrentItem="True" SelectedIndex="0" >
-
-                    </ComboBox>
                 </Grid>
             </TabItem>
         </TabControl>

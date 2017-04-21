@@ -72,6 +72,9 @@
     <Compile Include="Remont.xaml.cs">
       <DependentUpon>Remont.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Roli\OtdelTehObsl.xaml.cs">
+      <DependentUpon>OtdelTehObsl.xaml</DependentUpon>
+    </Compile>
     <Page Include="Avtorizaciya.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Remont.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Roli\OtdelTehObsl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,6 +209,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

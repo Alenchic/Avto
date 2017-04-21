@@ -27,12 +27,10 @@ namespace avto
         public Remont()
         {
             InitializeComponent();
-          
+
         }
-  
-        DataTable avtomobil;
-        DataTable Klient;
-        DataTable Sklad;
+
+
         private void TabItem_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateAvtomobil();
@@ -40,191 +38,59 @@ namespace avto
 
         private void UpdateAvtomobil()
         {
-      
-            string sql = "SELECT         "
-               + "* FROM dbo.Automobile INNER JOIN dbo.Komplektacia  ON dbo.Automobile.Komplektacia_ID = dbo.Komplektacia.id_komplektacia "
-               + "INNER JOIN dbo.Kategoria_automobilya  ON dbo.Automobile.Kategotia_ID = dbo.Kategoria_automobilya.id_kategoria";
-         
-            string sql1 = "SELECT * FROM dbo.Kategoria_automobilya ";
-            string sql2 = "SELECT * FROM dbo.Komplektacia ";
-            avtomobil = new DataTable();
-            DataTable tip_avto = new DataTable();
-            DataTable komplect = new DataTable();
-            SqlConnection connection = null;
-            try
-            {
-               
-                ConnectionClass ConCheck = new ConnectionClass();
-                RegistryKey DataBase_Connection = Registry.CurrentConfig;
-                RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
-                ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
-                
-                connection = new SqlConnection(ConCheck.ConnectString);
+            Podkl avto = new Podkl("SELECT * FROM dbo.Automobile INNER JOIN dbo.Komplektacia  ON dbo.Automobile.Komplektacia_ID = dbo.Komplektacia.id_komplektacia "
+               + "INNER JOIN dbo.Kategoria_automobilya  ON dbo.Automobile.Kategotia_ID = dbo.Kategoria_automobilya.id_kategoria");
+            Podkl kategoriya = new Podkl("SELECT * FROM dbo.Kategoria_automobilya ");
+            Podkl komplektaciya = new Podkl("SELECT * FROM dbo.Komplektacia");
 
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
+            comboBox1tip.SelectedValuePath = "id_kategoria";
+            comboBox1tip.DisplayMemberPath = "Tip_avto";
+            comboBox1tip.ItemsSource = kategoriya.Table.DefaultView;
 
-                SqlCommand command1 = new SqlCommand(sql1, connection);
-                SqlDataAdapter adapter1 = new SqlDataAdapter(command1);
+            comboBoxkorl.SelectedValuePath = "id_komplektacia";
+            comboBoxkorl.DisplayMemberPath = "Tip_Komplektacii";
+            comboBoxkorl.ItemsSource = komplektaciya.Table.DefaultView;
+            dataGrid2.ItemsSource = avto.Table.DefaultView;
 
-                SqlCommand command2 = new SqlCommand(sql2, connection);
-                SqlDataAdapter adapter2 = new SqlDataAdapter(command2);
-
-                connection.Open();
-                           
-                adapter1.Fill(tip_avto);
-                comboBox1tip.SelectedValuePath = "id_kategoria";
-                comboBox1tip.DisplayMemberPath = "Tip_avto";
-                comboBox1tip.ItemsSource = tip_avto.DefaultView;
-                adapter1.Update(tip_avto);
-
-                adapter2.Fill(komplect);
-                comboBoxkorl.SelectedValuePath = "id_komplektacia";
-                comboBoxkorl.DisplayMemberPath = "Tip_Komplektacii";
-                comboBoxkorl.ItemsSource = komplect.DefaultView;
-                adapter2.Update(komplect);
-
-                adapter.Fill(avtomobil);
-                dataGrid2.ItemsSource = avtomobil.DefaultView;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (connection != null)
-                    connection.Close();
-            }
         }
 
 
         private void UpdateKlient()
         {
-            string sql = "SELECT         "
+            Podkl Klient = new Podkl("SELECT         "
                + "* FROM dbo.Klient INNER JOIN dbo.Automobile  ON dbo.Klient.Auto_ID = dbo.Automobile.id_auto "
-               + "INNER JOIN dbo.Pasport  ON dbo.Klient.Pasport_ID = dbo.Pasport.id_pasport";
-            Klient = new DataTable();
-          
+               + "INNER JOIN dbo.Pasport  ON dbo.Klient.Pasport_ID = dbo.Pasport.id_pasport");
+            dataGrid1.ItemsSource = Klient.Table.DefaultView;
+            Podkl gosnomer = new Podkl("SELECT * FROM dbo.Automobile ");
 
-            SqlConnection connection = null;
-            try
-            {
-                ConnectionClass ConCheck = new ConnectionClass();
-                RegistryKey DataBase_Connection = Registry.CurrentConfig;
-                RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
-                ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
+            klientgosnomerav.SelectedValuePath = "id_auto";
+            klientgosnomerav.DisplayMemberPath = "Gos_nomer";
+            klientgosnomerav.ItemsSource = gosnomer.Table.DefaultView;
 
-
-                connection = new SqlConnection(ConCheck.ConnectString);
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-
-                connection.Open();
-                adapter.Fill(Klient);
-
-               
-
-                dataGrid1.ItemsSource = Klient.DefaultView;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (connection != null)
-                    connection.Close();
-            }
         }
 
         private void UpdateZay()
         {
-            string sql = "SELECT         "
-               + "* FROM dbo.Zyavka INNER JOIN dbo.Zapchast  ON dbo.Zyavka.Zapch_ID = dbo.Zapchast.ID_Zapch ";
-               
-            Sklad = new DataTable();
-          
+            Podkl Zay = new Podkl("SELECT * FROM dbo.Zyavka INNER JOIN dbo.Zapchast  ON dbo.Zyavka.Zapch_ID = dbo.Zapchast.ID_Zapch ");
+            dataGridzay.ItemsSource = Zay.Table.DefaultView;
+            Podkl detl = new Podkl("SELECT * FROM dbo.Zapchast ");
 
-            SqlConnection connection = null;
-            try
-            {
-                ConnectionClass ConCheck = new ConnectionClass();
-                RegistryKey DataBase_Connection = Registry.CurrentConfig;
-                RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
-                ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
-
-                connection = new SqlConnection(ConCheck.ConnectString);
-
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-
-                connection.Open();
-                adapter.Fill(Sklad);
-
-              
-                dataGridzay.ItemsSource = Sklad.DefaultView;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (connection != null)
-                    connection.Close();
-            }
+            tbZaynam.SelectedValuePath = "ID_Zapch";
+            tbZaynam.DisplayMemberPath = "Naimenovanie";
+            tbZaynam.ItemsSource = detl.Table.DefaultView;
+            
         }
 
         private void UpdateSklad()
         {
-            string sql = "SELECT         "
-               + "* FROM dbo.Zapchast INNER JOIN dbo.Sklad  ON dbo.Zapchast.Sklad_ID = dbo.Sklad.ID_Sklad "
-            + "INNER JOIN dbo.Postavhic  ON dbo.Zapchast.PS_ID = dbo.Postavhic.ID_PS";
-            Sklad = new DataTable();
 
-            SqlConnection connection = null;
-            try
-            {
-                ConnectionClass ConCheck = new ConnectionClass();
-                RegistryKey DataBase_Connection = Registry.CurrentConfig;
-                RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
-                ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
-                Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
+            Podkl sklad = new Podkl("SELECT * FROM dbo.Zapchast INNER JOIN dbo.Sklad  ON dbo.Zapchast.Sklad_ID = dbo.Sklad.ID_Sklad "
+            + "INNER JOIN dbo.Postavhic  ON dbo.Zapchast.PS_ID = dbo.Postavhic.ID_PS");
+            dataGrid.ItemsSource = sklad.Table.DefaultView;
 
-                connection = new SqlConnection(ConCheck.ConnectString);
-                SqlCommand command = new SqlCommand(sql, connection);
-                SqlDataAdapter adapter = new SqlDataAdapter(command);
-
-                connection.Open();
-                adapter.Fill(Sklad);
-
-                dataGrid.ItemsSource = Sklad.DefaultView;
-              
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                if (connection != null)
-                    connection.Close();
-            }
         }
 
-      
+
 
         private void TabItem_Loaded_1(object sender, RoutedEventArgs e)
         {
@@ -255,6 +121,8 @@ namespace avto
             UpdateSklad();
             UpdateZay();
         }
+
+        
 
         private void btndelzay_Click(object sender, RoutedEventArgs e)
         {
@@ -306,18 +174,11 @@ namespace avto
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Data_zayavki", DataZay.Text);
                     command.Parameters.AddWithValue("@Kol_stvo", tbZaykolvo.Text);
-                    command.Parameters.AddWithValue("@Zapch_ID", tbZaynam.Text);
-                    try
-                    {
+                    command.Parameters.AddWithValue("@Zapch_ID", tbZaynam.SelectedValue.ToString());
 
                         command.ExecuteNonQuery();
                         UpdateZay();
-                    }
-                    catch  
-                    {
-                        MessageBox.Show("Введите коректный номер детали");
-                    }
-                    connection.Close();
+                        connection.Close();
                     break;
 
                 case (true):
@@ -360,11 +221,11 @@ namespace avto
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    
+
                     break;
 
                 case (true):
-                   
+
                     MessageBox.Show("Заполните все пустые поля");
                     break;
             }
@@ -375,15 +236,16 @@ namespace avto
 
         public string USID;
         public string AVID;
+
         private void klientadd_Click(object sender, RoutedEventArgs e)
         {
-           
+
             switch (klientseriya.Text == "" || klientnomer.Text == "" || klientim.Text == "" || klientfam.Text == "" || klientoth.Text == "")
             {
 
                 case (false):
-                    
-                    ConnectionClass ConCheck =  new ConnectionClass();
+
+                    ConnectionClass ConCheck = new ConnectionClass();
                     RegistryKey DataBase_Connection = Registry.CurrentConfig;
                     RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
                     ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
@@ -393,28 +255,7 @@ namespace avto
                     SqlConnection connection = new SqlConnection(ConCheck.ConnectString);
 
                     connection.Open();
-                   
                     
-
-                    SqlCommand Select_USID = new SqlCommand("select Pasport.id_pasport from Pasport where Pasport.Seria ='" 
-                        + klientseriya.Text + "'", connection);
-                   
-                    try
-                    {
-                        SqlCommand Select_ID = new SqlCommand("select Automobile.id_auto from Automobile where Automobile.Gos_nomer = '" + klientgosnomerav.Text + "'", connection);
-
-                        AVID = Select_ID.ExecuteScalar().ToString();
-                        MessageBox.Show(AVID);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Не зарегистрированный номер автомобиля");
-                        return;
-                    }
-
-
-                    //SqlCommand command = new SqlCommand(sql1, connection);
-                    //SqlDataAdapter adapter = new SqlDataAdapter(Select_USID);
                     try
                     {
                         SqlCommand Pasport = new SqlCommand("add_Pasport", connection);
@@ -427,16 +268,11 @@ namespace avto
                     {
                         MessageBox.Show("Ошибка 2");
                     }
-                    try
-                    {
-
+                    
+                        SqlCommand Select_USID = new SqlCommand("select Pasport.id_pasport from Pasport where Pasport.Seria ='"
+                      + klientseriya.Text + "'", connection);
                         USID = Select_USID.ExecuteScalar().ToString();
-                        MessageBox.Show(USID);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("ошибка 3");
-                    }
+                      
                     try
                     {
                         SqlCommand command = new SqlCommand("dbo.add_Klient", connection);
@@ -444,12 +280,13 @@ namespace avto
                         command.Parameters.AddWithValue("@Fam_kl", klientfam.Text);
                         command.Parameters.AddWithValue("@Im_kl", klientim.Text);
                         command.Parameters.AddWithValue("@Otch_kl", klientoth.Text);
-                        command.Parameters.AddWithValue("@Auto_ID", AVID);
+                        command.Parameters.AddWithValue("@Auto_ID", klientgosnomerav.SelectedValue.ToString());
                         command.Parameters.AddWithValue("@Pasport_ID", USID);
 
                         command.ExecuteNonQuery();
                     }
-                    catch {
+                    catch
+                    {
                         MessageBox.Show("ошибка 4");
                     }
 
@@ -468,7 +305,7 @@ namespace avto
         }
 
 
-       
+
 
         private void btnupdzay_Click(object sender, RoutedEventArgs e)
         {
@@ -480,18 +317,18 @@ namespace avto
                     if (dataGridzay.SelectedItems.Count == 0) return;
                     var data = ((DataRowView)dataGridzay.SelectedItems[0]).Row["Data_zayavki"].ToString();
                     var kolvo = ((DataRowView)dataGridzay.SelectedItems[0]).Row["Kol_stvo"].ToString();
-                    var zaph = ((DataRowView)dataGridzay.SelectedItems[0]).Row["Zapch_ID"].ToString();
                     var IDZay = ((DataRowView)dataGridzay.SelectedItems[0]).Row["ID_Zyavka"].ToString();
                     DataZay.Text = data;
                     tbZaykolvo.Text = kolvo;
-                    tbZaynam.Text = zaph;
 
+                    dataGridzay.IsEnabled = false;
+                    btnaddzay.IsEnabled = false;
                     //string ID = IDZay;
 
 
                     break;
 
-                case (false): 
+                case (false):
 
                     var IDZay1 = ((DataRowView)dataGridzay.SelectedItems[0]).Row["ID_Zyavka"].ToString();
 
@@ -517,12 +354,14 @@ namespace avto
                             command.CommandType = CommandType.StoredProcedure;
                             command.Parameters.AddWithValue("@Data_zayavki", DataZay.Text);
                             command.Parameters.AddWithValue("@Kol_stvo", tbZaykolvo.Text);
-                            command.Parameters.AddWithValue("@Zapch_ID", tbZaynam.Text);
+                            command.Parameters.AddWithValue("@Zapch_ID", tbZaynam.SelectedValue.ToString());
                             command.Parameters.AddWithValue("@ID_Zyavka", IDZay1);
                             command.ExecuteNonQuery();
                             UpdateZay();
-
+                            dataGridzay.IsEnabled = true;
+                            btnaddzay.IsEnabled = true;
                             connection.Close();
+                            tbZaykolvo.Clear();
                         }
 
                         catch (Exception ex)
@@ -536,61 +375,21 @@ namespace avto
                         break;
                     }
             }
+
+        }
+
+      
+
         
-        }
-
-        private void btnclearzay_Click(object sender, RoutedEventArgs e)
-        {
-            
-            tbZaykolvo.Clear();
-            tbZaynam.Clear();
-        }
-
-        private void klientdell_Click(object sender, RoutedEventArgs e)
-        {
-            if (dataGrid1.SelectedItems.Count == 0) return;
-            var IDPR = ((DataRowView)dataGrid1.SelectedItems[0]).Row["ID_Klient"].ToString();
-            MessageBox.Show("Удалить:" + IDPR);
-            switch (MessageBox.Show("Вы действительно хотите удалить данные?", "Удаление", MessageBoxButton.YesNo))
-            {
-                case MessageBoxResult.Yes:
-
-                    ConnectionClass ConCheck = new ConnectionClass();
-                    RegistryKey DataBase_Connection = Registry.CurrentConfig;
-                    RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
-                    ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
-                       Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
-                       Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
-                       Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
-                    SqlConnection connection = new SqlConnection(ConCheck.ConnectString);
-                    connection.Open();
-                    SqlCommand command = new SqlCommand("dbo.dell_Klient", connection);
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@id_klient", IDPR);
-                    try
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    UpdateKlient();
-                    connection.Close();
-                    break;
-                case MessageBoxResult.No:
-                    break;
-            }
-        }
 
         private void DataZay_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = true;
         }
 
-       
 
-       
+
+
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -600,12 +399,169 @@ namespace avto
             MainWindow sda = new MainWindow();
             sda.Visibility = Visibility.Visible;
             //UpdateLayout();
-           
+
         }
 
         private void klientseriya_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !Char.IsDigit(e.Text, 0);
         }
-    }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
+        }
+
+        private void avtoupd_Click(object sender, RoutedEventArgs e)
+        {
+            switch (  avtogos.Text == "" || avtomarka.Text == ""||avtomodel.Text == "")
+            {
+                case (true):
+
+                    if (dataGrid2.SelectedItems.Count == 0) return;
+                    var gos = ((DataRowView)dataGrid2.SelectedItems[0]).Row["Gos_nomer"].ToString();
+                    var data = ((DataRowView)dataGrid2.SelectedItems[0]).Row["Data_vypuska"].ToString();
+                    var marka = ((DataRowView)dataGrid2.SelectedItems[0]).Row["Marka"].ToString();
+                    var model = ((DataRowView)dataGrid2.SelectedItems[0]).Row["Model"].ToString();
+                    avtodata.Text = data;
+                    avtogos.Text = gos;
+                    avtomarka.Text = marka;
+                    avtomodel.Text = model;
+                    dataGrid2.IsEnabled = false;
+                    avtoadd.IsEnabled = false;
+                    break;
+
+                case (false):
+
+                    var IDavto = ((DataRowView)dataGrid2.SelectedItems[0]).Row["id_auto"].ToString();
+                   
+                    MessageBoxResult result = MessageBox.Show("Изменить " + IDavto + " значение ?", "Изменить", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.No) return;
+                    {
+                        try
+                        {
+                            
+                             ConnectionClass ConCheck = new ConnectionClass();
+                            RegistryKey DataBase_Connection = Registry.CurrentConfig;
+                            RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
+                            ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
+                            SqlConnection connection = new SqlConnection(ConCheck.ConnectString);
+                            connection.Open();
+                            SqlCommand command = new SqlCommand("dbo.upd_Automobile", connection);
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Gos_nomer", avtogos.Text);
+                            command.Parameters.AddWithValue("@Data_vypuska", avtodata.Text);
+                                command.Parameters.AddWithValue("@Marka", avtomarka.Text);
+                            command.Parameters.AddWithValue("@Model", avtomodel.Text);
+                            command.Parameters.AddWithValue("@Kategotia_ID", comboBox1tip.SelectedValue.ToString());
+                            command.Parameters.AddWithValue("@Komplektacia_ID", comboBoxkorl.SelectedValue.ToString());
+                            command.Parameters.AddWithValue("@id_auto", IDavto);
+                            command.ExecuteNonQuery();
+
+                            connection.Close();
+                            dataGrid2.IsEnabled = true;
+                            avtoadd.IsEnabled = true;
+                            UpdateAvtomobil();
+                            
+                            avtogos.Clear();
+                            avtomarka.Clear();
+                            avtomodel.Clear();
+                        }
+
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Введите коректный номер детали");
+                        }
+                        break;
+                    }
+            }
+        }
+
+        private void klientupd_Click(object sender, RoutedEventArgs e)
+        {
+            switch (klientfam.Text == "" || klientim.Text == "" || klientoth.Text == "" || klientseriya.Text == "" || klientnomer.Text == "")
+            {
+                case (true):
+
+                    if (dataGrid1.SelectedItems.Count == 0) return;
+                    var fam = ((DataRowView)dataGrid1.SelectedItems[0]).Row["Fam_kl"].ToString();
+                    var im = ((DataRowView)dataGrid1.SelectedItems[0]).Row["Im_kl"].ToString();
+                    var oth = ((DataRowView)dataGrid1.SelectedItems[0]).Row["Otch_kl"].ToString();
+                    var seriya = ((DataRowView)dataGrid1.SelectedItems[0]).Row["Seria"].ToString();
+                    var nomer = ((DataRowView)dataGrid1.SelectedItems[0]).Row["Nomer"].ToString();
+                    klientfam.Text = fam;
+                    klientim.Text = im;
+                    klientoth.Text = oth;
+                    klientseriya.Text = seriya;
+                    klientnomer.Text = nomer;
+                    dataGrid1.IsEnabled = false;
+                    klientadd.IsEnabled = false;
+                    break;
+
+                case (false):
+
+                    var IDklient = ((DataRowView)dataGrid1.SelectedItems[0]).Row["ID_Klient"].ToString();
+
+                    MessageBoxResult result = MessageBox.Show("Изменить " + IDklient + " значение ?", "Изменить", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.No) return;
+                    {
+                        try
+                        {
+
+                            ConnectionClass ConCheck = new ConnectionClass();
+                            RegistryKey DataBase_Connection = Registry.CurrentConfig;
+                            RegistryKey Connection_Base_Party_Options = DataBase_Connection.CreateSubKey("DB_PARTY_OPTIOS");
+                            ConCheck.Connection_Options(Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("DS").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("IC").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("UID").ToString()),
+                               Encrypt.Decrypt(Connection_Base_Party_Options.GetValue("PDB").ToString()));
+                            SqlConnection connection = new SqlConnection(ConCheck.ConnectString);
+                            connection.Open();
+                            SqlCommand IDPas = new SqlCommand("select Pasport.id_pasport from Pasport where Pasport.Seria ='"
+                             + klientseriya.Text + "'", connection);
+                            var IDPasprt = IDPas.ExecuteScalar().ToString();
+
+                            SqlCommand command1 = new SqlCommand("dbo.upd_Pasport", connection);
+                            command1.CommandType = CommandType.StoredProcedure;
+                            command1.Parameters.AddWithValue("@Nomer", klientnomer.Text);
+                            command1.Parameters.AddWithValue("@Seria", klientseriya.Text);
+                            command1.Parameters.AddWithValue("@id_Pasport", IDPasprt);
+                            command1.ExecuteNonQuery();
+
+                            
+                            SqlCommand command = new SqlCommand("dbo.upd_Klient", connection);
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@Fam_kl", klientfam.Text);
+                            command.Parameters.AddWithValue("@Im_kl", klientim.Text);
+                            command.Parameters.AddWithValue("@Otch_kl", klientoth.Text);
+                            command.Parameters.AddWithValue("@Auto_ID", klientgosnomerav.SelectedValue.ToString());
+                            command.Parameters.AddWithValue("@id_klient", IDklient);
+                            command.ExecuteNonQuery();
+
+                            connection.Close();
+                            dataGrid1.IsEnabled = true;
+                            klientadd.IsEnabled = true;
+                            UpdateKlient();
+                         
+                            klientfam.Clear();
+                            klientim.Clear();
+                            klientoth.Clear();
+                            klientseriya.Clear();
+                            klientnomer.Clear();
+                        }
+
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Введите коректный номер детали");
+                        }
+                        break;
+                    }
+            }
+        }
+    }    
 }

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\УЧЁБА\hunter\avto\avto\obj\Debug\
+E:\УЧЁБА\Avto\avto\obj\Debug\
 avto
 none
 false
 DEBUG;TRACE
-E:\УЧЁБА\hunter\avto\avto\App.xaml
-6-1784882579
+E:\УЧЁБА\Avto\avto\App.xaml
+7-1965069231
 
-191541023735
+201051016481
 16-1265254421
-Avtorizaciya.xaml;Connection.xaml;login.xaml;OtdelKadrov.xaml;OtdelModify.xaml;Remont.xaml;
+Avtorizaciya.xaml;Connection.xaml;login.xaml;OtdelKadrov.xaml;OtdelModify.xaml;Remont.xaml;Roli\OtdelTehObsl.xaml;
 
-True
+False
 
