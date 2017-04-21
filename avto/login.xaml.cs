@@ -46,7 +46,7 @@ namespace avto
         void button4_Click(object sender, EventArgs e)
         {
 
-            switch (MessageBox.Show("Завершить работу прилоджения?", "Выход", MessageBoxButton.YesNo))
+            switch (MessageBox.Show("Завершить работу прилоджения??????????????", "Выход", MessageBoxButton.YesNo))
             {
                 case MessageBoxResult.Yes:
                     Application.Current.Shutdown();
